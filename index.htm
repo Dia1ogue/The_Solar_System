@@ -13,6 +13,7 @@
   <script type="text/javascript" src="../libs/OrbitControls.js"></script>
   <script type="text/javascript" src="../libs/dat.gui.js"></script>
   <script type="text/javascript" src="../libs/WebGL.js"></script>
+  <script type="text/javascript" src="../libs/Lensflare.js"></script>
 
 </head>
 <body>
@@ -30,20 +31,20 @@
   init();
   animate();
 
-  var scene, stats, axes, controls, camera, renderer;
+  var scene, stat, axes, controls, camera, renderer, particlesSystem;
   var sun, earth, mars, mercury, moon, neptune, uranus, venus;
 
   function init() {
     scene = new THREE.Scene();
-    //scene.background = new THREE.Color(0xaaaaaa);
+    scene.background = new THREE.Color(0x000000);
     //scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
-    stats = initStats();
+    stat = initStats();
 
-    axes = new THREE.AxesHelper(2000);
-    scene.add(axes);
+    axes = new THREE.AxesHelper(5000);
+    //scene.add(axes);
 
-    camera = new THREE.PerspectiveCamera(60,window.innerWidth / window.innerHeight, 1, 10000);
+    camera = new THREE.PerspectiveCamera(60,window.innerWidth / window.innerHeight, 1, 5000);
     camera.position.set(1000, 300, 100);
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -58,70 +59,154 @@
     controls.dampingFactor = 0.25;
     controls.screenSpacePanning = false;
     controls.minDistance = 100;
-    controls.maxDistance = 2000;
+    controls.maxDistance = 5000;
     controls.maxPolorAngle = Math.PI / 2;
 
     //-----Geometry-----//
-    sun = createMesh(new THREE.SphereGeometry(100, 20, 20), "sun.jpg");
+    sun = createMesh(new THREE.SphereGeometry(150, 32, 32), "sun.jpg");
 
-    earth = createMesh(new THREE.SphereGeometry(30, 20, 20), "earth.jpg");
-    earth.position.set(250, 0, 0);
+    mercury = createMesh(new THREE.SphereGeometry(12.2, 32, 32), "mercury.jpg");
+    mercury.position.set(240, 0, 0);
+    mercury.receiveShadow = true;
 
-    moon = createMesh(new THREE.SphereGeometry(15, 20, 20), "moon.jpg");
-    moon.position.set(300, 0, 0);
+    venus = createMesh(new THREE.SphereGeometry(30.4, 32, 32), "venus.jpg");
+    venus.position.set(320, 0, 0);
+    venus.receiveShadow = true;
 
-    mars = createMesh(new THREE.SphereGeometry(40, 20, 20), "mars.jpg");
-    mars.position.set(450, 0, 0);
+    earth = createMesh(new THREE.SphereGeometry(31.9, 32, 32), "earth.jpg");
+    earth.position.set(400, 0, 0);
+    earth.receiveShadow = true;
+    earth.castShadow = true;
 
-    mercury = createMesh(new THREE.SphereGeometry(50, 20, 20), "mercury.jpg");
-    mercury.position.set(750, 0, 0);
+    moon = createMesh(new THREE.SphereGeometry(8.7, 32, 32), "moon.jpg");
+    moon.position.set(450, 0, 0);
+    moon.parent = earth;
+    moon.receiveShadow = true;
 
-    neptune = createMesh(new THREE.SphereGeometry(60, 20, 20), "neptune.jpg");
-    neptune.position.set(1150, 0, 0);
+    mars = createMesh(new THREE.SphereGeometry(17.0, 32, 32), "mars.jpg");
+    mars.position.set(500, 0, 0);
+    mars.receiveShadow = true;
 
-    uranus = createMesh(new THREE.SphereGeometry(65, 20, 20), "uranus.jpg");
-    uranus.position.set(1500, 0, 0);
+    jupiter = createMesh(new THREE.SphereGeometry(65.4, 32, 32), "jupiter.jpg");
+    jupiter.position.set(600, 0, 0);
+    jupiter.receiveShadow = true;
 
-    venus = createMesh(new THREE.SphereGeometry(70, 20, 20), "venus.jpg");
-    venus.position.set(1800, 0, 0);
+    saturn = createMesh(new THREE.SphereGeometry(44.7, 32, 32), "saturn.png");
+    saturn.position.set(750, 0, 0);
+    saturn.receiveShadow = true;
+
+    neptune = createMesh(new THREE.SphereGeometry(32.4, 32, 32), "neptune.jpg");
+    neptune.position.set(950, 0, 0);
+    neptune.receiveShadow = true;
+
+    uranus = createMesh(new THREE.SphereGeometry(31.0, 32, 32), "uranus.jpg");
+    uranus.position.set(1150, 0, 0);
+    uranus.receiveShadow = true;
 
     scene.add(sun);
+    scene.add(mercury);
+    scene.add(venus);
     scene.add(earth);
     scene.add(moon);
     scene.add(mars);
-    scene.add(mercury);
+    scene.add(jupiter);
+    scene.add(saturn);
     scene.add(neptune);
     scene.add(uranus);
-    scene.add(venus);
 
     //-----Lights-----//
-    var sunlight1 = new THREE.DirectionalLight(0xffffff);
-    sunlight1.position.set(1, 1, 1);
-    scene.add(sunlight1);
+    //var sunlight1 = new THREE.DirectionalLight(0xffffff);
+    //sunlight1.position.set(1, 1, 1);
+    //sunlight1.castShadow = true;
+    //scene.add(sunlight1);
 
-    var sunlight2 = new THREE.DirectionalLight(0xffffff);
-    sunlight2.position.set(-1, -1, -1);
-    scene.add(sunlight2);
+    //var sunlight2 = new THREE.DirectionalLight(0xffffff);
+    //sunlight2.position.set(-1, -1, -1);
+    //sunlight2.castShadow = true;
+    //scene.add(sunlight2);
 
-    var ambientLight = new THREE.AmbientLight(0xffffff);
+    var sunlight = new THREE.PointLight(0xddddaa, 2.5, 0);
+    sunlight.castShadow = true;
+    scene.add(sunlight);
+
+    //var sunlight2 = new THREE.pointColor
+
+    var ambientLight = new THREE.AmbientLight(0x999999);
     scene.add(ambientLight);
+
+    //-----background-stars-----//
+    var particles = 20000;
+    var buffer = new THREE.BufferGeometry();
+    var positions = new Float32Array(particles * 3);
+    var colors = new Float32Array(particles * 3);
+    var color = new THREE.Color();
+
+    var gap = 1000;
+
+    for (var i = 0; i < positions.length; i += 3) {
+      var x = (Math.random() * gap * 2) * (Math.random() < .5 ? -1 : 1);
+      var y = (Math.random() * gap * 2) * (Math.random() < .5 ? -1 : 1);
+      var z = (Math.random() * gap * 2) * (Math.random() < .5 ? -1 : 1);
+
+      var max = Math.abs(x) > Math.abs(y) ? Math.abs(x) > Math.abs(z) ? 'x' : 'z': Math.abs(y) > Math.abs(z) ? 'y' : 'z';
+      var pos = {x, y, z};
+
+      if (Math.abs(pos[max]) < gap) {
+        pos[max] = pos[max] < 0 ? -gap : gap;
+      }
+
+      x = pos['x'];
+      y = pos['y'];
+      z = pos['z'];
+
+      positions[i]     = x;
+      positions[i + 1] = y;
+      positions[i + 2] = z;
+
+      var hasColor = Math.random() > 0.3;
+      var vx, vy, vz;
+
+      if (hasColor) {
+        vx = (Math.random() + 1) / 2;
+        vy = (Math.random() + 1) / 2;
+        vz = (Math.random() + 1) / 2;
+      } else {
+        vx = 1;
+        vy = 1;
+        vz = 1;
+      }
+
+      color.setRGB(vx, vy, vz);
+
+      colors[i]     = color.r;
+      colors[i + 1] = color.g;
+      colors[i + 2] = color.b;
+    }
+
+    buffer.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+    buffer.addAttribute('color', new THREE.BufferAttribute(positions, 3));
+    buffer.computeBoundingSphere();
+
+    var material = new THREE.PointsMaterial({size: 6, vertexColors: THREE.VertexColors});
+    particlesSystem = new THREE.Points(buffer, material);
+    scene.add(particlesSystem);
 
     //resize
     window.addEventListener('resize', onWindowResize, false);
-  }
 
-  //-----Stats-----//
-  function initStats() {
-    var stats = new Stats();
-    stats.setMode(0);
+    //-----Stats-----//
+    function initStats() {
+      var stats = new Stats();
+      stats.setMode(0);
 
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.left = '10px';
-    stats.domElement.style.top = '10px';
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = '10px';
+      stats.domElement.style.top = '10px';
 
-    document.getElementById('Stats-output').appendChild(stats.domElement);
+      document.getElementById('Stats-output').appendChild(stats.domElement);
 
-    return stats;
+      return stats;
+    }
   }
 
   //-----GUI-----//
@@ -131,12 +216,17 @@
   function createMesh(geometry, imageFile) {
     var loader = new THREE.TextureLoader();
     var texture = loader.load("textures/" + imageFile);
-    var material = new THREE.MeshPhongMaterial();
+    var material = new THREE.MeshLambertMaterial();
+    //var material = new THREE.MeshPhongMaterial();
     material.map = texture;
 
     var mesh = new THREE.Mesh(geometry, material);
     return mesh;
   }
+
+  //-----Orbital revolution-----//
+
+  //-----Rotation-----//
 
   //
   function onWindowResize() {
@@ -155,6 +245,7 @@
   }
 
   function render() {
+    //camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
   }
 </script>
