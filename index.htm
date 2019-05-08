@@ -85,11 +85,41 @@
     axes = new THREE.AxesHelper(5000);
     //scene.add(axes);
 
-    camera = new THREE.PerspectiveCamera(60,window.innerWidth / window.innerHeight, 1, 5000);
-    camera.position.set(500, 500, 500);
+    camera = new THREE.PerspectiveCamera(60,window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(500, 500, 0);
 
-    //canvas.
+    //-----plane-to-cube-----//
+    var backPlane = createMesh(new THREE.PlaneBufferGeometry(5000, 5000), "back.png");
+    backPlane.rotation.y = Math.PI / 2;
+    backPlane.position.set(-2500, 0, 0);
+    scene.add(backPlane);
 
+    var frontPlane = createMesh(new THREE.PlaneBufferGeometry(5000, 5000), "front.png");
+    frontPlane.rotation.y = -Math.PI / 2;
+    frontPlane.position.set(2500, 0, 0);
+    scene.add(frontPlane);
+
+    var leftPlane = createMesh(new THREE.PlaneBufferGeometry(5000, 5000), "left.png");
+    leftPlane.rotation.z = Math.PI;
+    leftPlane.position.set(0, 0, 2500);
+    scene.add(leftPlane);
+
+    var rightPlane = createMesh(new THREE.PlaneBufferGeometry(5000, 5000), "right.png");
+    //rightPlane.rotation.z = -Math.PI / 2;
+    rightPlane.position.set(0, 0, -2500);
+    scene.add(rightPlane);
+
+    var topPlane = createMesh(new THREE.PlaneBufferGeometry(5000, 5000), "top.png");
+    topPlane.rotation.x = Math.PI / 2;
+    topPlane.position.set(0, 2500, 0);
+    scene.add(topPlane);
+
+    var bottomPlane = createMesh(new THREE.PlaneBufferGeometry(5000, 5000), "bottom.png");
+    bottomPlane.rotation.x = Math.PI / 2;
+    bottomPlane.position.set(0, -2500, 0);
+    scene.add(bottomPlane);
+
+    //-----Renderer-----//
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
@@ -130,12 +160,12 @@
     sun = createMesh(new THREE.SphereGeometry(150, 32, 32), "sun.jpg");
 
     //-----sun sprites-----//
-    var spriteMap = new THREE.TextureLoader().load("textures/sprite.png");
-    var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap, color:0xff0000});
-    var sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(2, 2, 1);
-    sprite.position.set(200, 100, 100);
-    scene.add(sprite);
+    // var spriteMap = new THREE.TextureLoader().load("textures/sprite.png");
+    // var spriteMaterial = new THREE.SpriteMaterial({map: spriteMap, color:0xff0000});
+    // var sprite = new THREE.Sprite(spriteMaterial);
+    // sprite.scale.set(2, 2, 1);
+    // sprite.position.set(200, 100, 100);
+    // scene.add(sprite);
 
     //-----glow-----//
     // var geometry_glow = new THREE.SphereBufferGeometry(155, 32, 32);
@@ -170,7 +200,7 @@
 
     earth = createMesh(new THREE.SphereGeometry(31.9, 32, 32), "earth.jpg");
     earth.position.set(400, 0, 0);
-    earth.receiveShadow = true;
+    //earth.receiveShadow = true;
     earth.castShadow = true;
 
     moon = createMesh(new THREE.SphereGeometry(8.7, 32, 32), "moon.jpg");
@@ -242,8 +272,8 @@
 
     //-----Lights-----//
     var sunlight1 = new THREE.DirectionalLight(0xddddaa);
-    sunlight1.position.set(0, 1, 0);
-    //sunlight1.castShadow = true;
+    sunlight1.position.set(1, 1, 1);
+    // sunlight1.castShadow = true;
     scene.add(sunlight1);
 
     // var sunlight2 = new THREE.DirectionalLight(0xffffff);
@@ -259,6 +289,7 @@
 
     var ambientLight = new THREE.AmbientLight(0xaaaaaa);
     scene.add(ambientLight);
+
 
     //-----background-stars-----//
     particles = 20000;
@@ -345,7 +376,7 @@
   function createMesh(geometry, imageFile) {
     var loader = new THREE.TextureLoader();
     var texture = loader.load("textures/" + imageFile);
-    var material = new THREE.MeshPhongMaterial();
+    var material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide});
     //var material = new THREE.MeshPhongMaterial();
     material.map = texture;
 
