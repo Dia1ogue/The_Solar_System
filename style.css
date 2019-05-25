@@ -1,0 +1,41 @@
+  body {
+    position: absolute;
+    margin: 0;
+    overflow: hidden;
+    border: 0;
+  }
+
+  #tips{
+    position: absolute;
+    top: 1%;
+    left: 40%;
+    font-size: 16px;
+    color: #fff;
+  }
+  #thumbnail{
+    position: absolute;
+    top: 10%;
+    left: 0;
+    font-size: 10px;
+    color: #fff;
+    width: 100px;
+    display: block;
+    margin: inherit;
+    border: 0px;
+    visibility: visible;
+  }
+  #sunInfo{
+    position: absolute;
+    background-color: #fff;
+    border-radius: 15px 15px 15px 15px;
+    opacity: 0.9;
+    top: 10%;
+    left: 20%;
+    font-size: 15px;
+    height: 500px;
+    width: 1000px;
+    color: #000;
+    visibility: hidden;
+  }
+  #clickSun{
+  }
