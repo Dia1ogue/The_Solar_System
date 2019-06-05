@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css" type="text/css">
+
+  <title>The Solar System</title>
+  <script type="text/javascript" src="../libs/three.js"></script>
+  <script type="text/javascript" src="../libs/stats.js"></script>
+  <script type="text/javascript" src="../libs/OrbitControls.js"></script>
+  <script type="text/javascript" src="../libs/dat.gui.js"></script>
+  <script type="text/javascript" src="../libs/WebGL.js"></script>
+  <script type="text/javascript" src="../libs/Lensflare.js"></script>
+  <script type="text/javascript" src="../libs/jquery.min.js"></script>
+
+
+
+</head>
+
+<body>
+  <canvas id="main"></canvas>
+  <div id="tips">Use W/D/Space or your mouse to move camera. Try to click!</div>
+  <div id="thumbnail">
+    <img src="textures/thumbnail/sun.png" id="clickSun" width="75" height="75" vspace="0" onclick="clickSun()" alt="Sun" /><br>
+    <img src="textures/thumbnail/mercury.png" id="clickMercury" width="75" height="75" vspace="0" onclick="clickMercury()" alt="Mercury" /><br>
+    <img src="textures/thumbnail/venus.png" id="clickVenus" width="75" height="75" vspace="0" onclick="clickVenus()" alt="Venus" /><br>
+    <img src="textures/thumbnail/earth.png" id="clickEarth" width="75" height="75" vspace="0" onclick="clickEarth()" alt="Earth" /><br>
+    <img src="textures/thumbnail/mars.png" id="clickMars" width="75" height="75" vspace="0" onclick="clickMars()" alt="Mars" /><br>
+    <img src="textures/thumbnail/jupiter.png" id="clickJupiter" width="75" height="75" vspace="0" onclick="clickJupiter()" alt="Jupiter" /><br>
+    <img src="textures/thumbnail/saturn.png" id="clickSaturn" width="75" height="75" vspace="0" onclick="clickSaturn()" alt="Saturn" /><br>
+    <img src="textures/thumbnail/neptune.png" id="clickNeptune" width="75" height="75" vspace="0" onclick="clickNeptune()" alt="Neptune" /><br>
+    <img src="textures/thumbnail/uranus.png" id="clickUranus" width="75" height="75" vspace="0" onclick="clickUranus()" alt="Uranus" /><br>
+  </div>
+
+  <div id="sunInfo">
+    <p>
+      <img src="textures/info/sun.png" width="500" height="350" align="right" alt="sunInfo" />
+      &emsp;&emsp;太阳是太阳系的中心天体，占有太阳系总体质量的99.86%。太阳系中的八大行星、小行星、流星、彗星、外海王星天体以及星际尘埃等，都围绕着太阳公转，而太阳则围绕着银河系的中心公转。</p>
+    &emsp;&emsp;太阳是位于太阳系中心的恒星，它几乎是热等离子体与磁场交织着的一个理想球体。太阳直径大约是1392000（1.392×10⁶）千米，相当于地球直径的109倍；体积大约是地球的130万倍；其质量大约是2×10³⁰千克（地球的330000倍）。从化学组成来看，现在太阳质量的大约四分之三是氢，剩下的几乎都是氦，包括氧、碳、氖、铁和其他的重元素质量少于2%，采用核聚变的方式向太空释放光和热。</p>
+    &emsp;&emsp;太阳目前正在穿越银河系内部边缘猎户臂的本地泡区中的本星际云。在距离地球17光年的距离内有50颗最邻近的恒星系（与太阳距离最近的恒星是称作比邻星的红矮星，大约4.2光年）。</p>
+    &emsp;&emsp;太阳是一颗黄矮星（光谱为G2V），黄矮星的寿命大致为100亿年，目前太阳大约45.7亿岁。
+    在大约50至60亿年之后，太阳内部的氢元素几乎会全部消耗尽，太阳的核心将发生坍缩，导致温度上升，这一过程将一直持续到太阳开始把氦元素聚变成碳元素。虽然氦聚变产生的能量比氢聚变产生的能量少，但温度也更高，因此太阳的外层将膨胀，并且把一部分外层大气释放到太空中。当转向新元素的过程结束时，太阳的质量将稍微下降，外层将延伸到地球或者火星目前运行的轨道处（这时由于太阳质量的下降，这两颗行星将会离太阳更远）。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickSun()" />
+  </div>
+  <div id="mercuryInfo">
+    <p>
+      <img src="textures/info/mercury.jpg" width="350" height="350" align="right" alt="mercuryInfo">
+      &emsp;&emsp;水星（英语：Mercury，拉丁语：Mercurius）是太阳系八大行星最内侧也是最小的一颗行星，也是离太阳最近的行星。中国称为辰星，有着八大行星中第二大（包括冥王星）的轨道偏心率。它每87.968个地球日绕行太阳一周，而每公转2.01周同时也自转3圈。</p>
+    &emsp;&emsp;水星有着太阳系行星中最小的轨道倾角。水星轨道的近日点每世纪比牛顿力学的预测多出43弧秒（角秒）的进动，这种现象直到20世纪才从爱因斯坦的广义相对论得到解释。</p>
+    &emsp;&emsp;水星是一颗类地行星，由于其非常靠近太阳，所以只会出现在凌晨称为辰星，或是黄昏出现作为昏星。除非有日食，否则在阳光的照耀下通常是看不见水星的。</p>
+    &emsp;&emsp;水星是太阳系内与地球相似的4颗类地行星之一，有着与地球一样的岩石个体。它是太阳系中最小的行星，在赤道的半径是2,439.7公里。水星甚至比一些巨大的天然卫星，比如甘尼米德（木卫三）和泰坦（土卫六）还要小
+    ——虽然质量较大。水星由大约70%的金属和30%的硅酸盐材料组成，水星的密度是5.427克/cm³，在太阳系中是第二高的，仅次于地球的5.515克/cm³。如果不考虑重力压缩对物质密度的影响，水星物质的密度将是最高的——未经重力压缩的水星物质密度是5.3克/cm³，相较之下的地球物质只有4.4克/cm³。</p>
+    &emsp;&emsp;从水星的密度可以推测其内部结构的详细资料。地球的高密度，特别是核心的高密度是由重力压缩所导致的。水星是如此的小，因此它的内部不会被强力的挤压。所以它要有如此高的密度，它的核心必然很大且含有许多的铁。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickMercury()" />
+  </div>
+  <div id="venusInfo">
+    <p>
+      <img src="textures/info/venus.png" width="450" height="350" align="right" alt="venusInfo">
+      &emsp;&emsp;金星（Venus）是太阳系中八大行星之一，按离太阳由近及远的次序，是第二颗，距离太阳0.725天文单位。它是离地球最近的行星（火星有时候会更近）。古罗马人称作维纳斯，中国古代称之为长庚、启明、太白或太白金星，古希腊神话中称为阿佛洛狄特。公转周期是224.71地球日。</p>
+    &emsp;&emsp;夜空中亮度仅次于月球，排第二，金星要在日出稍前或者日落稍后才能达到亮度最大。它清晨出现在东方天空，被称为“启明”；傍晚处于天空的西侧，被称为“长庚”。</p>
+    &emsp;&emsp;金星是一颗类地行星，因为其质量与地球类似，有时也被人们叫做地球的“姐妹星”。也是太阳系中唯一一颗没有磁场的行星。在八大行星中金星的轨道最接近圆形，偏心率最小，仅为0.006811。</p>
+    &emsp;&emsp;以地球为三角形的顶点之一，分别连结金星和太阳，就会发现这个角度非常小，即使在最大时也只有48.5°，这是因为金星的轨道处于地球轨道的内侧。因此，当我们看到金星的时候，不是在清晨便是在傍晚，并且分别处于天空的东侧和西侧。</p>
+    &emsp;&emsp;金星是全天中最亮的行星，亮度为-3.3至-4.4等，比著名的天狼星（除太阳外全天最亮的恒星）还要亮14倍，犹如一颗耀眼的钻石，于是古希腊人称它为阿佛洛狄忒（Aphrodite）——爱与美的女神，而罗马人则称它为维纳斯（Venus）——美神。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickVenus()" />
+  </div>
+  <div id="earthInfo">
+    <p>
+      <img src="textures/info/earth.jpg" width="400" height="400" align="right" alt="earthInfo">
+      &emsp;&emsp;地球（Earth）是太阳系八大行星之一，按离太阳由近及远的次序排为第三颗，也是太阳系中直径、质量和密度最大的类地行星，距离太阳1.5亿公里。地球自西向东自转，同时围绕太阳公转。现有40~46亿岁，它有一个天然卫星——月球，二者组成一个天体系统——地月系统。46亿年以前起源于原始太阳星云。</p>
+    &emsp;&emsp;地球赤道半径6378.137千米，极半径6356.752千米，平均半径约6371千米，赤道周长大约为40076千米，呈两极稍扁赤道略鼓的不规则的椭圆球体。地球表面积5.1亿平方公里，其中71%为海洋，29%为陆地，在太空上看地球呈蓝色。</p>
+    &emsp;&emsp;地球内部有核、幔、壳结构，地球外部有水圈、大气圈以及磁场。地球是目前宇宙中已知存在生命的唯一的天体，是包括人类在内上百万种生物的家园。</p>
+    &emsp;&emsp;人类科学家已经能够重建地球过去有关的资料。太阳系的物质起源于45.672亿±60万年前，而大约在45.4亿年前（误差约1%），地球和太阳系内的其他行星开始在太阳星云——太阳形成后残留下来的气体与尘埃形成的圆盘状——内形成。通过吸积的过程，地球经过1至2千万年的时间，大致上已经完全成形。从最初熔融的状态，地球的外层先冷却凝固成固体的地壳，水也开始在大气层中累积。</p>
+    &emsp;&emsp;地球圈层分为地球外圈和地球内圈两大部分。地球外圈可进一步划分为四个基本圈层，即大气圈、水圈、生物圈和岩石圈；地球内圈可进一步划分为三个基本圈层，即地幔圈、外核液体圈和固体内核圈。此外在地球外圈和地球内圈之间还存在一个软流圈，它是地球外圈与地球内圈之间的一个过渡圈层，位于地面以下平均深度约150公里处。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickEarth()" />
+  </div>
+  <div id="marsInfo">
+    <p>
+      <img src="textures/info/mars.jpg" width="500" height="280" align="right" alt="marsInfo">
+      &emsp;&emsp;火星（Mars）是太阳系八大行星之一，是太阳系由内往外数的第四颗行星，属于类地行星，直径约为地球的53%，质量为地球的14%。自转轴倾角、自转周期均与地球相近，公转一周约为地球公转时间的两倍。橘红色外表是地表的赤铁矿（氧化铁）。我国古书上将火星称为“荧惑星”，西方古代（古罗马）称为“神话玛尔斯星”是十二星座白羊座的独一守护星，并非天蝎座的守护行星。</p>
+    &emsp;&emsp;火星基本上是沙漠行星，地表沙丘、砾石遍布且没有稳定的液态水体。二氧化碳为主的大气既稀薄又寒冷，沙尘悬浮其中，每年常有尘暴发生。火星两极皆有水冰与干冰组成的极冠会随着季节消长。</p>
+    &emsp;&emsp;与地球相比，火星地质活动较不活跃，地表地貌大部份于远古较活跃的时期形成，有密布的陨石坑、火山与峡谷，包括太阳系最高的山：奥林帕斯山和最大的峡谷：水手号峡谷。另一个地形特征是南北半球的明显差别：南方是古老、充满陨石坑的高地，北方则是较年轻的平原。</p>
+    &emsp;&emsp;火星有两个天然卫星：火卫一和火卫二，形状不规则，可能是被隔离的矮小行星。在地球，火星肉眼可见，最高亮度可达-2.9等，八大行星中比木星、金星暗。2015年9月28日，美国航天局宣布火星存在流动石。</p>
+    &emsp;&emsp;2018年7月25日，法新社消息称，火星上发现了第一个液态水。</p>
+    &emsp;&emsp;右图为“好奇号”探测器在火星拍摄的全景图。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickMars()" />
+  </div>
+  <div id="jupiterInfo">
+    <p>
+      <img src="textures/info/jupiter.png" width="400" height="350" align="right" alt="jupiterInfo">
+      &emsp;&emsp;木星（Jupiter）是太阳系八大行星中体积最大、自转最快的行星，从内向外的第五颗行星。它的质量为太阳的千分之一，是太阳系中其它七大行星质量总和的2.5倍。由于木星与土星、天王星、海王星皆属气体行星，因此四者又合称类木行星（木星和土星合称气态巨行星）。木星是一个气态巨行星，占所有太阳系行星质量的70%，主要由氢组成，占其总质量的75%，其次为氦，占总质量的25%，岩核则含有其他较重的元素。人类所看到的通常是大气中云层的顶端，压强比1个大气压略高。</p>
+    &emsp;&emsp;木星由于自转快速（自转一周为9个地球时）而呈现扁球体（赤道附近有略微但明显可见的凸起）。外大气层明确依纬度分为多个带域，各带域相接的边际容易出现乱流和风暴，最显著的例子是大红斑。环绕着行星的是松弱的行星环系统和强大的磁层（木星磁场十分强大，其背对太阳一面的磁场甚至延伸至土星轨道）。木星至少有79个卫星。</p>
+    &emsp;&emsp;2018年2月，美国航空航天局（NASA）公布了由“朱诺”号卫星拍摄到的一组木星南极的图像，醒目的蓝色漩涡以华丽的图案扭曲变幻，创造了令人惊叹的奇观。</p>
+    &emsp;&emsp;2018年，天文学家发现了12颗新的木星卫星，使得这颗气态巨行星的已知卫星数量增加到79个。科学家在观测更遥远的柯伊伯带天体时拍摄到了它们。新增的两颗卫星被命名为“S/2016 J1”和“S/2017 J1”，分别距木星2100万公里和2400万公里。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickJupiter()" />
+  </div>
+  <div id="saturnInfo">
+    <p>
+      <img src="textures/info/saturn.png" width="500" height="350" align="right" alt="saturnInfo">
+      &emsp;&emsp;土星（英文Saturn，拉丁文Saturnus），是太阳系八大行星之一，距日距离（由近到远）第6位。质量、直径仅次于木星，并与木星同属气态巨行星。欧洲古代（古希腊）称土星为大地之母盖娅，希腊语：Γαία、英语：Gaia (Gaea)，在古代中国也叫镇星或福星。</p>
+    &emsp;&emsp;土星主要由氢组成，还有少量的氦与微量元素，内部的核心包括岩石和冰，外围由数层金属氢和气体包裹着。最外层的大气层在外观上可以看出发亮的土星光环，虽然有时会有长时间存在的现象。土星的风速高达1800公里/时，明显的比木星上的风速快。土星的行星磁场强度介于地球和木星之间，空气流非常快。</p>
+    &emsp;&emsp;土星有一个美丽及幽远的行星光环，（可以通过望远镜直接观测），主要的成分是冰的微粒和较少数的岩石以及等离子。已经确认的土星的卫星总共有62颗。其中，土卫六是土星系统中最大和太阳系中第二大的卫星（半径2575Km）（太阳系最大的卫星是木星的木卫三，半径2631Km）。</p>
+    &emsp;&emsp;天文学家通过分析红外线影像发现土星有一个“温暖”的极地漩涡，这种特征在太阳系内是独一无二的。天文学家认为这个点是土星上温度最高的点，土星上其他各处的温度是-185 ℃，而该漩涡处的温度则高达-122 ℃。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickSaturn()" />
+  </div>
+  <div id="neptuneInfo">
+    <p>
+      <img src="textures/info/neptune.png" width="600" height="300" align="right" alt="clickNeptune">
+      &emsp;&emsp;海王星（Neptune），是太阳系八大行星中的远日行星。按照行星与太阳的距离排列海王星是第八颗行星，直径上是第四大行星，质量上是第三大行星。它的亮度仅为7.85等，只有在天文望远镜里才能看到它。由于它那荧荧的淡蓝色光，所以西方人用罗马神话中的海神——尼普顿（Neptune）”的名字来称呼它。在中文里，把它译为海王星。</p>
+    &emsp;&emsp;海王星在直径和体积上小于天王星，但质量却大于天王星，大约是地球的17倍，而它的姊妹行星天王星因密度较低，质量大约是地球的14倍。</p>
+    &emsp;&emsp;海王星的大气层以氢和氦为主，还有微量的甲烷，大气层中的甲烷，是使行星呈现蓝色的原因之一。海王星有着太阳系最强烈的风暴，测量到的风速高达2100km/h。海王星云顶的温度是-218 ℃（55K），因为距离太阳最远，是太阳系最冷的地区之一。尽管如此，海王星却有着一个炽热的内部，海王星核心的温度约7000℃，和大多数已知的行星相似。</p>
+    &emsp;&emsp;海王星在1846年9月23日被发现，是唯一利用数学预测而非有计划的观测发现的行星。天文学家利用天王星轨道的摄动推测出海王星的存在与可能的位置，迄今只有美国的旅行者2号探测器曾经在1989年8月25日拜访过海王星。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickNeptune()" />
+  </div>
+  <div id="uranusInfo">
+    <p>
+      <img src="textures/info/uranus.png" width="500" height="350" align="right" alt="uranusInfo">
+      &emsp;&emsp;天王星（Uranus），为太阳系八大行星之一，是太阳系由内向外的第七颗行星（18.37~20.08天文单位），其体积在太阳系中排名第三（比海王星大），质量排名第四（小于海王星），几乎横躺着围绕太阳公转。</p>
+    &emsp;&emsp;天王星大气的主要成分是氢、氦和甲烷。据推测，其内部可能含有丰富的重元素。地幔由甲烷和氨的冰组成，可能含有水。内核由冰和岩石组成。天王星是太阳系内大气层最冷的行星，最低温度只有49K（-224℃）。</p>
+    &emsp;&emsp;天王星的英文名称Uranus来自古希腊神话中的天空之神乌拉诺斯（Οὐρανός），是克洛诺斯的父亲，宙斯的祖父。与在古代就为人们所知的五颗行星（水星、金星、火星、木星、土星）相比，天王星的亮度也是肉眼可见的，但由于亮度较暗、绕行速度缓慢并且由于当时望远镜观测能力不足，未被古代的观测者认定为是一颗行星。直到1781年3月13日，威廉·赫歇耳爵士宣布他发现了天王星，首度扩展了太阳系已知的界限，这也是第一颗使用望远镜发现的行星。</p>
+    &emsp;&emsp;天王星和海王星的内部和大气构成和更巨大的气态巨行星木星土星不同。同样的，天文学家设立了冰巨星分类来安置它们。
+    </p>
+    <img src="textures/close.png" id="close" alt="Close" width="30" height="30" align="right" onclick="clickUranus()" />
+  </div>
+
+  <script type="text/javascript">
+    if (WEBGL.isWebGLAvailable() === false) {
+      document.body.appendChild(WEBGL.getWebGLErrorMessage());
+    }
+    //var IDs = ['sunInfo', 'mercuryInfo', 'venusInfo', 'earthInfo', 'marsInfo', 'jupiterInfo', 'saturnInfo', 'neptuneInfo', 'uranusInfo'];
+
+    var divSun = document.getElementById('sunInfo');
+    var divMercury = document.getElementById('mercuryInfo');
+    var divVenus = document.getElementById('venusInfo');
+    var divEarth = document.getElementById('earthInfo');
+    var divMars = document.getElementById('marsInfo');
+    var divJupiter = document.getElementById('jupiterInfo');
+    var divSaturn = document.getElementById('saturnInfo');
+    var divNeptune = document.getElementById('neptuneInfo');
+    var divUranus = document.getElementById('uranusInfo');
+
+    function clickSun(element) {
+      var display = document.getElementById("sunInfo").style.display;
+      if (display == "none") {
+        $("#sunInfo").fadeIn("slow");
+        document.getElementById("sunInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("sunInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickMercury() {
+      var display = document.getElementById("mercuryInfo").style.display;
+      if (display == "none") {
+        $("#mercuryInfo").fadeIn("slow");
+        document.getElementById("mercuryInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("mercuryInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickVenus() {
+      var display = document.getElementById("venusInfo").style.display;
+      if (display == "none") {
+        $("#venusInfo").fadeIn("slow");
+        document.getElementById("venusInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("venusInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickEarth() {
+      var display = document.getElementById("earthInfo").style.display;
+      if (display == "none") {
+        $("#earthInfo").fadeIn("slow");
+        document.getElementById("earthInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        $("#earthInfo").fadeOut("slow");
+        document.getElementById("earthInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickMars() {
+      var display = document.getElementById("marsInfo").style.display;
+      if (display == "none") {
+        $("#marsInfo").fadeIn("slow");
+        document.getElementById("marsInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("marsInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickJupiter() {
+      var display = document.getElementById("jupiterInfo").style.display;
+      if (display == "none") {
+        $("#jupiterInfo").fadeIn("slow");
+        document.getElementById("jupiterInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("jupiterInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickSaturn() {
+      var display = document.getElementById("saturnInfo").style.display;
+      if (display == "none") {
+        $("#saturnInfo").fadeIn("slow");
+        document.getElementById("saturnInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("saturnInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickNeptune() {
+      var display = document.getElementById("neptuneInfo").style.display;
+      if (display == "none") {
+        $("#neptuneInfo").fadeIn("slow");
+        document.getElementById("neptuneInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("neptuneInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    function clickUranus() {
+      var display = document.getElementById("uranusInfo").style.display;
+      if (display == "none") {
+        $("#uranusInfo").fadeIn("slow");
+        document.getElementById("uranusInfo").style.visibility = "visible";
+        document.getElementById("thumbnail").style.visibility = "hidden";
+      } else {
+        document.getElementById("uranusInfo").style.display = "none";
+        document.getElementById("thumbnail").style.visibility = "visible";
+      }
+    };
+
+    var scene, stats, axes, orbitControls, camera, renderer;
+    var canvas = document.getElementById("main");
+    var particles, particlesSystem, buffer, positions, colors, color, sizes, gap;
+    var Sun, Earth, Mars, Mercury, Moon, Jupiter, Saturn, Neptune, Uranus, Venus, stars = [];
+    var starNames = [];
+    var displayName;
+    var mouse = new THREE.Vector2();
+    var raycaster = new THREE.Raycaster();
+    var srmesh1, srmesh2;
+    var dist;
+    var textsize = [];
+
+    var group = new THREE.Group();
+    var groupParent = new THREE.Group();
+
+    function init() {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+      //scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+
+      //-----Stats-----//
+      stats = new Stats();
+      //stats.setMode(0);
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = '0px';
+      stats.domElement.style.top = '0px';
+      document.body.appendChild(stats.domElement);
+
+      axes = new THREE.AxesHelper(5000);
+      //scene.add(axes);
+
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
+      camera.position.set(500, 500, 0);
+
+      //-----plane-to-cube-----//
+      var backPlane = createBack('back.png');
+      backPlane.rotation.y = Math.PI / 2;
+      backPlane.position.set(-2500, 0, 0);
+      scene.add(backPlane);
+
+      var frontPlane = createBack('front.png');
+      frontPlane.rotation.y = -Math.PI / 2;
+      frontPlane.position.set(2500, 0, 0);
+      scene.add(frontPlane);
+
+      var leftPlane = createBack('left.png');
+      leftPlane.rotation.z = Math.PI;
+      leftPlane.position.set(0, 0, 2500);
+      scene.add(leftPlane);
+
+      var rightPlane = createBack('right.png');
+      //rightPlane.rotation.z = -Math.PI / 2;
+      rightPlane.position.set(0, 0, -2500);
+      scene.add(rightPlane);
+
+      var topPlane = createBack('top.png');
+      topPlane.rotation.x = Math.PI / 2;
+      topPlane.position.set(0, 2500, 0);
+      scene.add(topPlane);
+
+      var bottomPlane = createBack('bottom.png');
+      bottomPlane.rotation.x = Math.PI / 2;
+      bottomPlane.position.set(0, -2500, 0);
+      scene.add(bottomPlane);
+
+      //-----Renderer-----//
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true
+      });
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMapSoft = true;
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      //-----Controls-----//
+      orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+      orbitControls.autoRotate = false;
+      orbitControls.autoRotateSpeed = 1;
+      orbitControls.enableKeys = true;
+      orbitControls.rotateSpeed = 0.5;
+      orbitControls.enableZoom = true;
+      orbitControls.enablePan = false;
+      orbitControls.enableDamping = true;
+      orbitControls.dampingFactor = 0.25;
+      orbitControls.screenSpacePanning = false;
+      orbitControls.minDistance = 100;
+      orbitControls.maxDistance = 1200;
+      orbitControls.maxPolorAngle = Math.PI / 2;
+
+      orbitControls.keys = {
+        A: 65,
+        LEFT: 37,
+        W: 87,
+        UP: 38,
+        D: 68,
+        RIGHT: 39,
+        S: 83,
+        BOTTOM: 40,
+        SPACE: 32
+      };
+
+      loadFont();
+
+      //-----Geometry-----//
+      Sun = createPlanet('Sun', 0, 0, 150, 0, 1 / 500, "sun.jpg");
+      textsize.push(Sun.radius);
+      //公转————1：2.5：4.1：7.8：49.2：123.1：350.0：385.5
+      //自转————25.1:58.6:243.0:1.0:1.0:0.4:0.4:0.7:0.7
+      Mercury = createPlanet('Mercury', 240, 0, 12.2, 0.032, 1 / 1160, 'mercury.jpg');
+      stars.push(Mercury);
+      textsize.push(Mercury.radius);
+      Venus = createPlanet('Venus', 320, 0, 30.4, 0.016, -1 / 4860, 'venus.jpg');
+      stars.push(Venus);
+      textsize.push(Venus.radius);
+      Earth = createPlanet('Earth', 400, 0, 31.9, 0.013, 0.05, 'earth.jpg');
+      stars.push(Earth);
+      textsize.push(Earth.radius);
+      Moon = createPlanet('Moon', 50, 0, 8.7, 0.013, 0.05, 'moon.jpg');
+      stars.push(Moon);
+      textsize.push(Moon.radius);
+      Mars = createPlanet('Mars', 500, 0, 17.0, 0.010, 0.05, 'mars.jpg');
+      stars.push(Mars);
+      textsize.push(Mars.radius);
+      Jupiter = createPlanet('Jupiter', 600, 0, 65.4, 0.005, 0.2, 'jupiter.jpg');
+      stars.push(Jupiter);
+      textsize.push(Jupiter.radius);
+      Saturn = createPlanet('Saturn', 750, 0, 44.7, 0.003, 0.2, 'saturn.png');
+      stars.push(Saturn);
+      textsize.push(Saturn.radius);
+      Neptune = createPlanet('Neptune', 950, 0, 32.4, 0.002, 0.35, 'neptune.jpg');
+      stars.push(Neptune);
+      textsize.push(Neptune.radius);
+      Uranus = createPlanet('Uranus', 1150, 0, 31.0, 0.001, 0.35, 'uranus.jpg');
+      stars.push(Uranus);
+      textsize.push(Uranus.radius);
+
+      //-----Ring-----//
+      var distance = [240, 320, 400, 500, 600, 750, 950, 1150];
+      for (var i = 0; i < 8; i++) {
+        var geometry = new THREE.RingGeometry(distance[i], distance[i] + 2, 90);
+        var material = new THREE.MeshBasicMaterial({
+          color: 0xddddaa,
+          side: THREE.DoubleSide
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+        mesh.rotation.x = -Math.PI / 2;
+        scene.add(mesh);
+      }
+      //-----Saturn Ring-----//
+      var srgeometry1 = new THREE.RingGeometry(63, 95, 60);
+      var srmaterial1 = new THREE.MeshBasicMaterial({
+        side: THREE.DoubleSide
+      });
+      var loader = new THREE.TextureLoader();
+      var texture = loader.load("textures/planet/saturnRing.png");
+      srmaterial1.map = texture;
+      srmesh1 = new THREE.Mesh(srgeometry1, srmaterial1);
+      srmesh1.rotation.x = -Math.PI / 3;
+      srmesh1.rotation.y = -Math.PI / 4;
+      srmesh1.position.set(750, 0, 0);
+      scene.add(srmesh1);
+
+      var srgeometry2 = new THREE.RingGeometry(93, 95, 60);
+      var srmaterial2 = new THREE.MeshBasicMaterial({
+        side: THREE.DoubleSide
+      });
+      var texture2 = loader.load("texture/planet/saturnRings.png");
+      srmaterial2.map = texture2;
+      srmesh2 = new THREE.Mesh(srgeometry2, srmaterial2);
+      srmesh2.rotation.x = -Math.PI / 3;
+      srmesh2.rotation.y = -Math.PI / 4;
+      srmesh2.position.set(750, 0, 0);
+      scene.add(srmesh2);
+
+      //-----Lights-----//
+      // var sunlight1 = new THREE.DirectionalLight(0x999999, 0.8);
+      // sunlight1.position.set(1, 0, 0);
+      // // sunlight1.castShadow = true;
+      // scene.add(sunlight1);
+      //
+      // var sunlight2 = new THREE.DirectionalLight(0x999999, 0.8);
+      // sunlight2.position.set(-1, 0, 0);
+      // //sunlight2.castShadow = true;
+      // scene.add(sunlight2);
+
+      var sunIll = 5;
+      var sunlight = new THREE.PointLight(0xffffff, sunIll, 4000);
+      //sunlight.castShadow = true;
+      scene.add(sunlight);
+
+      //var sunlight2 = new THREE.pointColor
+      var ambiIll = 1;
+      var ambiColor = "#aaaaaa";
+      var ambientLight = new THREE.AmbientLight(ambiColor, ambiIll);
+      scene.add(ambientLight);
+
+      //-----GUI-----//
+      var controls = new function() {
+        this.ambientColor = ambiColor;
+        this.disableAmbientLight = false;
+        this.sunlightIllumination = sunIll;
+        this.ambientIllumination = ambiIll;
+      };
+      var gui = new dat.GUI();
+      gui.addColor(controls, 'ambientColor').onChange(function(e) {
+        ambientLight.color = new THREE.Color(e);
+      });
+      gui.add(controls, 'disableAmbientLight').onChange(function(e) {
+        ambientLight.visible = !e;
+      });
+      gui.add(controls, 'sunlightIllumination', 0, 10).onChange(function(e) {
+        sunlight.intensity = e;
+      });
+      gui.add(controls, 'ambientIllumination', 0, 2).onChange(function(e) {
+        ambientLight.intensity = e;
+      });
+
+
+      //-----background-stars-----//
+      particles = 20000;
+      buffer = new THREE.BufferGeometry();
+      positions = new Float32Array(particles * 3);
+      colors = new Float32Array(particles * 3);
+      color = new THREE.Color();
+      sizes = [];
+
+      gap = 1500;
+
+      for (var i = 0; i < positions.length; i += 3) {
+        var x = (Math.random() * gap * 2) * (Math.random() < .5 ? -1 : 1);
+        var y = (Math.random() * gap * 2) * (Math.random() < .5 ? -1 : 1);
+        var z = (Math.random() * gap * 2) * (Math.random() < .5 ? -1 : 1);
+
+        var max = Math.abs(x) > Math.abs(y) ? Math.abs(x) > Math.abs(z) ? 'x' : 'z' : Math.abs(y) > Math.abs(z) ? 'y' : 'z';
+        var pos = {
+          x,
+          y,
+          z
+        };
+
+        if (Math.abs(pos[max]) < gap) {
+          pos[max] = pos[max] < 0 ? -gap : gap;
+        }
+
+        x = pos['x'];
+        y = pos['y'];
+        z = pos['z'];
+
+        positions[i] = x;
+        positions[i + 1] = y;
+        positions[i + 2] = z;
+
+        var hasColor = Math.random() > 0.3;
+        var vx, vy, vz;
+
+        if (hasColor) {
+          vx = (Math.random() + 1) / 2;
+          vy = (Math.random() + 1) / 2;
+          vz = (Math.random() + 1) / 2;
+        } else {
+          vx = 1;
+          vy = 1;
+          vz = 1;
+        }
+
+        color.setRGB(vx, vy, vz);
+
+        colors[i] = color.r;
+        colors[i + 1] = color.g;
+        colors[i + 2] = color.b;
+        sizes.push(20);
+      }
+
+      buffer.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+      buffer.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+      buffer.addAttribute('size', new THREE.Float32BufferAttribute(sizes, 1).setDynamic(true));
+      buffer.computeBoundingSphere();
+
+      var material = new THREE.PointsMaterial({
+        size: 6,
+        vertexColors: THREE.VertexColors
+      });
+      particlesSystem = new THREE.Points(buffer, material);
+      scene.add(particlesSystem);
+
+      raycaster = new THREE.Raycaster(camera.position);
+      raycaster.far = 1200;
+
+      //onMouseDown
+      window.addEventListener('mousemove', onMouseMove, false);
+      //resize
+      window.addEventListener('resize', onWindowResize, false);
+      //onKeyDown
+      window.addEventListener('keydown', onKeyDown, false);
+    }
+
+    //
+    function createSprits(color, img) {
+      return new THREE.Sprite(new THREE.SpriteMaterial({
+        map: new THREE.ImageUtils.loadTexture('textures/glow.png'),
+        useScreenCoordinates: false,
+        alignment: THREE.SpriteAlignment.center,
+        color: 0xFEAB10,
+        transparent: true,
+        blending: THREE.AdditiveBlending
+      }));
+    }
+
+    //-----CustomMesh-----//
+    function createPlanet(name, distance, angle, radius, revolutionSpeed, rotationSpeed, imageFile) {
+      var loader = new THREE.TextureLoader();
+      var texture = loader.load("textures/planet/" + imageFile);
+      var material = new THREE.MeshLambertMaterial({
+        side: THREE.DoubleSide
+      });
+      //var material = new THREE.MeshPhongMaterial();
+      material.map = texture;
+      var geometry = new THREE.SphereGeometry(radius, 32, 32);
+      var mesh = new THREE.Mesh(geometry, material);
+      mesh.position.x = distance * Math.cos(angle);
+      mesh.position.z = distance * Math.sin(angle);
+      mesh.receiveShadow = true;
+      mesh.castShadow = true;
+      mesh.name = name;
+
+      var star = {
+        name,
+        distance,
+        angle,
+        radius,
+        revolutionSpeed,
+        rotationSpeed,
+        Mesh: mesh
+      };
+
+      scene.add(mesh);
+
+      starNames.push(mesh.name);
+
+      return star;
+    }
+
+    function createBack(imageFile) {
+      var loader = new THREE.TextureLoader();
+      var texture = loader.load("textures/universe/" + imageFile);
+      var material = new THREE.MeshPhongMaterial({
+        side: THREE.DoubleSide
+      });
+      material.map = texture;
+      var geometry = new THREE.PlaneGeometry(5000, 5000);
+      var mesh = new THREE.Mesh(geometry, material);
+      mesh.material.transparent = true;
+      mesh.material.opacity = 0.3;
+
+      return mesh;
+    }
+
+    function createRing(geometry, imageFile) {
+      var loader = new THREE.TextureLoader();
+      var texture = loader.load("texture/planet/" + imageFile);
+      var material = new THREE.MeshBasicMaterial({
+        side: THREE.DoubleSide
+      });
+      material.map = texture;
+
+      var mesh = new THREE.Mesh(geometry, material);
+      return mesh;
+    }
+
+    //-----displayName-----//
+    function loadFont() {
+      var loader = new THREE.FontLoader();
+
+    }
+
+    function displayPlanetName() {
+
+      // function nameConstructor() {
+      // for (var i = 0; i < starNames.length; i++) {
+      //   var planetName = new THREE.Mesh(
+      //     new THREE.TextGeometry(starNames[i], {
+      //       size: 4,
+      //       height: 4
+      //     }),
+      //     new THREE.MeshBasicMaterial({
+      //       color: 0xffffff,
+      //       side: THREE.DoubleSide
+      //     }));
+      //   planetName.position.set(stars[i].Mesh.position);
+      //   scene.add(planetName);
+      // }
+      // }
+    }
+
+    //-----Orbital revolution-----//
+
+    function revolution() {
+      for (var i = 0; i < stars.length; i++) {
+        if (i != 3 && i != 2) {
+          stars[i].angle += stars[i].revolutionSpeed;
+          stars[i].Mesh.position.set(stars[i].distance * Math.sin(stars[i].angle), 0,
+            stars[i].distance * Math.cos(stars[i].angle));
+        }
+      }
+
+      groupParent.add(stars[2].Mesh);
+      group.add(stars[3].Mesh);
+      groupParent.add(group);
+      scene.add(groupParent);
+
+      group.position.set(400, 0, 0);
+      groupParent.rotation.y += 0.01;
+      group.rotation.y += 0.01;
+
+      srmesh1.position.copy(stars[6].Mesh.position);
+      srmesh2.position.copy(stars[6].Mesh.position);
+
+    }
+
+    //-----Rotation-----//
+
+    function rotation() {
+      for (var i = 0; i < stars.length; i++) {
+        stars[i].Mesh.rotation.y += stars[i].rotationSpeed;
+      }
+      Sun.Mesh.rotation.y += Sun.rotationSpeed;
+    }
+
+
+    //
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    //
+    function onMouseMove(event) {
+      //event.preventDefault();
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+
+    //-----cameraReset-----//
+    function cameraReset() {
+      camera.position.set(500, 500, 0);
+    }
+
+    function cameraLeft() {
+
+    }
+
+    //
+
+    function onKeyDown(event) {
+      var keyCode = event.keyCode;
+      switch (keyCode) {
+        case 65:
+        case 37:
+          dist = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.y, 2) + Math.pow(camera.position.z, 2));
+          console.log(dist);
+          cameraLeft();
+          console.log('push a/←');
+          break;
+        case 87:
+        case 38:
+          camera.position.y += 10;
+          console.log('push w/↑');
+          break;
+        case 68:
+        case 39:
+          camera.rotation.y -= 1;
+          console.log('push d/→');
+          break;
+        case 83:
+        case 40:
+          camera.position.y -= 10;
+          console.log('push s/↓');
+          break;
+        case 32:
+          cameraReset();
+          break;
+        default:
+          console.log("Push W/A/S/D or ↑/↓/←/→ to move camera, please.");
+      }
+    }
+
+    //
+    function animate() {
+      revolution();
+      rotation();
+      // raycaster.setFromCamera(mouse, camera);
+      // var intersects = raycaster.intersectObjects(scene.children);
+      // if (intersects.length > 0) {
+      //   //console.log(intersects[0]);
+      //   var obj = intersects[0].object;
+      //   var name = obj.name;
+      //   displayName && (displayName.visible = false);
+      //   if (starNames[name]) {
+      //     starNames[name].visible = true;
+      //     displayName = starNames[name];
+      //     displayName.position.copy(obj.position);
+      //     displayName.geometry.center();
+      //     displayName.position.y = starNames[name].radius + 4;
+      //     displayName.lookAt(camera.position);
+      //   }
+      // } else {
+      //   displayName && displayName.visible && (displayName.visible = false)
+      // }
+      displayPlanetName();
+      orbitControls.update();
+      stats.update();
+      render();
+      requestAnimationFrame(animate);
+    }
+
+    function render() {
+      camera.lookAt(0, 0, 0);
+      camera.updateMatrixWorld();
+      var time = Date.now() * 0.005;
+      particlesSystem.rotation.y = 0.01 * time;
+      var sizes = buffer.attributes.size.array;
+      for (var i = 0; i < particles; i++) {
+        sizes[i] = 10 * (1 + Math.sin(0.1 * i + time));
+      }
+      buffer.attributes.size.needsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+    init();
+    animate();
+  </script>
+
+</body>
+
+</html>
